@@ -1,0 +1,87 @@
+<main role="main" class="container" style="min-height: 100vh;">
+    <div class="row mt-3 text-center mx-auto">
+        <div class="col-lg-6 mx-auto">
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-lg-12 col-sm-12">
+            <h2 id="texto-hola" *ngIf="nombreUsuario">¡Hola {{nombreUsuario}}!</h2>
+            <span id="texto-pregunta">
+                ¿Que Necesitas?
+            </span>
+        </div>
+    </div>
+    <div id="contenedor-categorias" class="row mb-3">
+        <!-- Categoría de ejemplo -->
+        <div class="col-lg-3 col-md-4 col-sm-6 mt-2" *ngFor="let categoria of listaCategorias">
+            <div class="card-item card" [style.background]="categoria.color" (click)="open(infoCategoria, categoria._id)">
+                <!--(click)="infoCategorias()"-->
+                <div class="row">
+                    <div class="col mx-auto text-center m-3">
+                        <img [src]="categoria.icono" class="category-icon">
+                    </div>
+                    <div class="col"></div>
+                </div>
+                <div class="row m-3 mt-4">
+                    <section class="col">
+                        <h3 class="text-white font-weight-bolder">{{categoria.nombreCategoria}}</h3>
+                        <p class="text-white" style="font-size: 13px;">3 Comercios</p>
+                    </section>
+                </div>
+            </div>
+        </div><!-- Categoría de ejemplo -->
+    </div>
+</main><!-- /.container -->
+
+
+<!--Modal infoCategoria-->
+<ng-template #infoCategoria let-modal>
+    <div class="modal-header" style="background-color: #563D7C; color: #FFF;">
+        <h4 class="modal-title" id="modal-basic-title">Información de {{nombreCategoria}}</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+
+    <div class="modal-body row">
+
+        <div class="col-lg-6 col-sm-12 mt-2" *ngFor="let empresa of detalleEmpresasCategoria">
+            <div class="card" style="border-radius:12px">
+                <section>
+                    <img [src]="'../../../assets/'+empresa.imagen" class="img-fluid" style="border-radius: 12px">
+                    <h3 style="color: #201f1f; font-weight:bolder;">{{empresa.nombreEmpresa}}</h3>
+                </section>
+
+                <section class="p-3">
+                    <div *ngFor="let producto of empresa.productos">
+                        <div class="row p-2">
+                            <div class="col-lg-7">
+                                <h4 style="color:#563D7C;">{{producto.nombreProducto}}</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <p>{{producto.descripcion}}</p>
+                            </div>
+                            <div class="col-lg-4 ml-auto">
+                                <b>$ {{producto.precio}}</b>
+                            </div>
+                        </div>
+                        <div class="row g-3 pt-2"><!-- col-lg-5-->
+                            <div class="col-auto" *ngIf="idUsuario">
+                                <label for="cantidad_{{producto.id}}">Cantidad:</label>
+                                <input type="number" name="cantidad_{{producto.id}}" class="form-control w-50 px-2" [(ngModel)]="producto.cantidad" min="1" max="100">
+                            </div>
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-secondary" (click)="pedir(idUsuario, producto)">Pedir</button>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Cerrar</button>
+    </div>
+</ng-template>

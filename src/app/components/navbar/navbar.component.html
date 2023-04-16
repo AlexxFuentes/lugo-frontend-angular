@@ -1,0 +1,82 @@
+<nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #563D7C; height: 90px;">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <h2 id="logo">Lugo</h2>
+        </a>
+        <form class="row g-3">
+            <div class="col-auto">
+                <button class="btn btn-secondary my-2 my-sm-0 mr-2 px-3" type="button" (click)="open(modalSeleccionUsuario)">Seleccionar usuario</button>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-secondary my-2 my-sm-0 mr-2 px-3" type="button" (click)="open(modalOrdenes)" (click)="ordenesUsuario()">Ver Ordenes</button>
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-secondary my-2 my-sm-0 px-3" (click)="open(modalCreacionCategoria)">Agregar Nueva Categoria</button>
+            </div>
+        </form>
+    </div>
+</nav>
+
+<!--Modal seleccionar usuario-->
+<ng-template #modalSeleccionUsuario let-modal>
+	<div class="modal-header" style="background-color: #563D7C; color: #FFF;">
+		<h4 class="modal-title" id="modal-basic-title">Cambiar usuario</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<form>
+			<select name="usuarios" id="usuarioActual" class="form-control mr-3" [(ngModel)]="idUsuarioSeleccionado">
+                <option value="" hidden>Selecccione un usuario</option>
+                <option *ngFor="let usuario of listaUsuarios" [ngValue]="usuario._id">{{usuario.nombre}}</option>
+            </select>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-dark" (click)="cambiarUsuario()">Guardar</button>
+	</div>
+</ng-template><!--Modal seleccionar usuario-->
+
+<!--Modal Ordenes usuario-->
+<ng-template #modalOrdenes let-modal>
+	<div class="modal-header" style="background-color: #563D7C;">
+		<h4 class="modal-title" id="modal-basic-title">Pedidos de {{nombreUsuarioSeleccionado}}</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div id="zona-pedidos" class="modal-body" *ngFor="let orden of listaOrdenesUsuario">
+        <h3 style="color: #563D7C; font-weight: bold;">{{orden.nombreProducto}}</h3>
+        <p style="font-size: 18px;">{{orden.descripcion}}</p>
+        <p class="ml-auto"><b style="font-size: 25px">{{orden.precio}}</b></p>
+        <hr>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-dark" (click)="modal.close('Cross click')">cerrar</button>
+	</div>
+</ng-template><!--Modal Ordenes usuario-->
+
+<!-- Modal Nueva categoria-->
+<ng-template #modalCreacionCategoria let-modal>
+	<div class="modal-header" style="background-color: #563D7C;">
+		<h4 class="modal-title" id="modal-basic-title">Crea una nueva categoria</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<form>
+            <div class="form-group mb-3">
+                <input [(ngModel)]="nombreCategoria" type="text" class="form-control" name="txt-nombre" id="txt-nombre" placeholder="Digite Nombre">
+            </div>
+            <div class="form-group mb-3">
+                <input [(ngModel)]="descripcion" type="text" class="form-control" name="txt-descripcion" id="txt-descripcion" placeholder="Digite Descripcion">
+            </div>
+            <div class="form-group mb-3">
+                <label for="txt-color">Color Hexdecimal:</label>
+                <input [(ngModel)]="color" type="color" class="form-control" name="txt-color" id="txt-color">
+            </div>
+            <!-- <div class="form-group mb-3">
+                <input type="text" class="form-control" id="txt-icono" placeholder="Digite Icono">
+            </div> -->
+        </form>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-dark" (click)="guardarCategoria()">Guardar</button>
+	</div>
+</ng-template><!-- Modal Nueva categoria-->
